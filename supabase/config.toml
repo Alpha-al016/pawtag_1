@@ -1,0 +1,13 @@
+project_id = "YOUR_SUPABASE_PROJECT_ID"
+
+[functions.public-pet]
+verify_jwt = false
+
+[functions.claim-tag]
+verify_jwt = false
+
+[functions.edit-by-token]
+verify_jwt = false
+
+[functions.request-access]
+verify_jwt = false
