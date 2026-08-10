@@ -1,0 +1,12 @@
+# Environment variables (Sangat Penting agar API key aman)
+.env
+.env.local
+.env.*.local
+
+# Dependencies
+node_modules/
+
+# Build & temporary files
+dist/
+build/
+.DS_Store
