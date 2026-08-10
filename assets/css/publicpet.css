@@ -1,0 +1,111 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:"Poppins",sans-serif;
+    background:#f5f7fb;
+    display:flex;
+    justify-content:center;
+    padding:40px 20px;
+}
+
+.container{
+    width:100%;
+    max-width:420px;
+}
+
+.pet-card{
+    background:#fff;
+    border-radius:24px;
+    padding:30px;
+    text-align:center;
+    box-shadow:0 15px 40px rgba(0,0,0,.08);
+    margin-bottom:20px;
+}
+
+.pet-card img{
+    width:140px;
+    height:140px;
+    border-radius:50%;
+    object-fit:cover;
+    border:5px solid #eef2ff;
+    margin-bottom:20px;
+}
+
+.pet-card h1{
+    font-size:28px;
+    margin-bottom:6px;
+}
+
+.pet-card p{
+    color:#666;
+    margin-bottom:15px;
+}
+
+.status{
+    display:inline-block;
+    padding:8px 18px;
+    border-radius:30px;
+    font-size:14px;
+    font-weight:600;
+    background:#d1fae5;
+    color:#065f46;
+}
+
+.info-card{
+    background:#fff;
+    border-radius:20px;
+    padding:22px;
+    margin-bottom:18px;
+    box-shadow:0 10px 25px rgba(0,0,0,.06);
+}
+
+.info-card h2{
+    font-size:18px;
+    margin-bottom:18px;
+}
+
+.info-card p{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:14px;
+    color:#444;
+}
+
+.button-group{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.primary-btn,
+.secondary-btn{
+    text-decoration:none;
+    text-align:center;
+    padding:15px;
+    border-radius:15px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.primary-btn{
+    background:#4f46e5;
+    color:#fff;
+}
+
+.primary-btn:hover{
+    background:#4338ca;
+}
+
+.secondary-btn{
+    background:#25D366;
+    color:white;
+}
+
+.secondary-btn:hover{
+    opacity:.9;
+}

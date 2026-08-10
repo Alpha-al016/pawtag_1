@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Hewan | Paw Tag</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="../assets/css/addpet.css">
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                🐾 Paw Tag
+            </div>
+            <nav class="sidebar-menu">
+                <a href="dashboard.html">
+                    <i class="bi bi-grid"></i>
+                    Dashboard
+                </a>
+                <a class="active" href="mypets.html">
+                    <i class="bi bi-heart"></i>
+                    My Pets
+                </a>
+                <a href="nfctag.html">
+                    <i class="bi bi-phone"></i>
+                    NFC Tag
+                </a>
+                <a href="scanhistory.html">
+                    <i class="bi bi-upc-scan"></i>
+                    Scan History
+                </a>
+                <a href="profile.html">
+                    <i class="bi bi-person"></i>
+                    Profile
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="#" id="logoutBtn">
+                    <i class="bi bi-box-arrow-right"></i>
+                    Logout
+                </a>
+            </div>
+        </aside>
+        <div class="main-content">
+            <header class="topbar">
+                <div class="logo">
+                    🐾 Paw Tag
+                </div>
+                <div class="user-menu">
+                    <i class="bi bi-bell"></i>
+                    <div class="avatar" id="avatar">
+                        R
+                    </div>
+                </div>
+            </header>
+            <main class="addpet">
+                <section class="page-title">
+                    <h1>Tambah Hewan</h1>
+                    <p>
+                        Lengkapi data hewan peliharaanmu.
+                    </p>
+                </section>
+                <section class="form-card">
+                    <h2>Informasi Dasar</h2>
+                    <form id="petForm">
+                        <div class="form-group">
+                            <label for="petName">
+                                Nama Hewan
+                            </label>
+                            <input
+                                type="text"
+                                id="petName"
+                                placeholder="Contoh: Bruno"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="petType">
+                                Jenis Hewan
+                            </label>
+                            <select id="petType" required>
+                                <option>Anjing</option>
+                                <option>Kucing</option>
+                                <option>Burung</option>
+                                <option>Kelinci</option>
+                                <option>Lainnya</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="breed">
+                                Ras
+                            </label>
+                            <input
+                                type="text"
+                                id="breed"
+                                placeholder="Golden Retriever"
+                                required>
+                        </div>
+                        <h2>Informasi Hewan</h2>
+                        <div class="form-group">
+                            <label for="birth">
+                                Tanggal Lahir
+                            </label>
+                            <input
+                                type="date"
+                                id="birth">
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">
+                                Jenis Kelamin
+                            </label>
+                            <select id="gender">
+                                <option>Jantan</option>
+                                <option>Betina</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="color">
+                                Warna
+                            </label>
+                            <input
+                                type="text"
+                                id="color"
+                                placeholder="Contoh: Coklat Putih">
+                        </div>
+                        <div class="form-group">
+                            <label for="weight">
+                                Berat (kg)
+                            </label>
+                            <input
+                                type="number"
+                                id="weight"
+                                placeholder="5">
+                        </div>
+                        <h2>Foto Hewan</h2>
+                        <div class="upload-area" id="uploadArea">
+                            <img
+                                id="previewImage"
+                                src=""
+                                alt="Preview Hewan">
+                            <div class="upload-placeholder" id="uploadPlaceholder">
+                                <i class="bi bi-cloud-upload"></i>
+                                <p>Klik untuk Upload Foto</p>
+                            </div>
+                            <input
+                                type="file"
+                                id="petImage"
+                                accept="image/*">
+                        </div>
+                        <h2>Kontak Darurat</h2>
+                        <div class="form-group">
+                            <label>
+                                Nama Pemilik
+                            </label>
+                            <input
+                                type="text"
+                                id="owner"
+                                placeholder="Nama Lengkap"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                Nomor HP
+                            </label>
+                            <input
+                                type="tel"
+                                id="phone"
+                                placeholder="08xxxxxxxxxx"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                Alamat
+                            </label>
+                            <textarea
+                                rows="4"
+                                id="address"
+                                placeholder="Alamat lengkap"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                Catatan
+                            </label>
+                            <textarea
+                                rows="5"
+                                id="note"
+                                placeholder="Alergi, penyakit, makanan favorit, dll."></textarea>
+                        </div>
+                        <div class="submit-area">
+                            <button
+                                type="submit"
+                                class="save-btn"
+                                id="savePet">
+                            <i class="bi bi-floppy"></i>
+                                Simpan Hewan
+                            </button>
+                        </div>
+                    </form>
+                </section>
+            </main>
+        </div>
+    </div>
+</body>
+<script src="../assets/js/session.js"></script>
+<script src="../assets/js/addpet.js"></script>
+</html>

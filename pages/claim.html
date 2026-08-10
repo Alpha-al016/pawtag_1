@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Klaim PawTag</title>
+</head>
+<body>
+  <main>
+    <h1>Klaim PawTag</h1>
+    <p>Daftarkan tag Anda dan buat profil hewan.</p>
+
+    <form id="claimForm">
+      <label>Tag ID
+        <input id="tag_id" readonly>
+      </label><br>
+
+      <label>Email Pemilik
+        <input id="owner_email" type="email" required>
+      </label><br>
+
+      <label>Nama Pemilik
+        <input id="owner" required>
+      </label><br>
+
+      <label>Nomor Telepon
+        <input id="phone" required>
+      </label><br>
+
+      <label>Alamat
+        <input id="address">
+      </label><br>
+
+      <label>Nama Hewan
+        <input id="name" required>
+      </label><br>
+
+      <label>Jenis Hewan
+        <input id="type">
+      </label><br>
+
+      <label>Ras
+        <input id="breed">
+      </label><br>
+
+      <label>Tanggal Lahir
+        <input id="birth" type="date">
+      </label><br>
+
+      <label>Jenis Kelamin
+        <input id="gender">
+      </label><br>
+
+      <label>Warna
+        <input id="color">
+      </label><br>
+
+      <label>Berat
+        <input id="weight" type="number" step="0.01">
+      </label><br>
+
+      <label>Catatan
+        <textarea id="note"></textarea>
+      </label><br>
+
+      <button type="submit">Klaim Tag</button>
+    </form>
+
+    <p id="status"></p>
+  </main>
+
+  <script src="/assets/js/supabase-config.js"></script>
+  <script src="/assets/js/route-utils.js"></script>
+  <script src="/assets/js/claim.js"></script>
+</body>
+</html>

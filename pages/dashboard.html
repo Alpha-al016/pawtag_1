@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Paw Tag</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                🐾 Paw Tag
+            </div>
+            <nav class="sidebar-menu">
+                <a class="active" href="dashboard.html">
+                    <i class="bi bi-grid"></i>
+                    Dashboard
+                </a>
+                <a href="mypets.html">
+                    <i class="bi bi-heart"></i>
+                    My Pets
+                </a>
+                <a href="nfctag.html">
+                    <i class="bi bi-phone"></i>
+                    NFC Tag
+                </a>
+                <a href="scanhistory.html">
+                    <i class="bi bi-upc-scan"></i>
+                    Scan History
+                </a>
+                <a href="profile.html">
+                    <i class="bi bi-person"></i>
+                    Profile
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="#" id="logoutBtn">
+                    <i class="bi bi-box-arrow-right"></i>
+                    Logout
+                </a>
+            </div>
+        </aside>
+        <div class="main-content">
+            <header class="topbar">
+                <div class="logo">
+                    🐾 Paw Tag
+                </div>
+                <div class="user-menu">
+                    <i class="bi bi-bell"></i>
+                    <div class="avatar" id="avatar">
+                        R
+                    </div>
+                </div>
+            </header>
+            <main class="dashboard">
+                <section class="welcome">
+                    <h1>
+                        
+                    </h1>
+                    <p>
+                        Selamat datang kembali di Paw Tag.
+                    </p>
+                </section>
+                <section class="summary">
+                    <div class="summary-card">
+                        <h2 id="totalPets">0</h2>
+                        <p>Total Hewan</p>
+                    </div>
+                    <div class="summary-card">
+                        <h2 id="activeNFC">0</h2>
+                        <p>NFC Aktif</p>
+                    </div>
+                    <div class="summary-card">
+                        <h2 id="inactiveNFC">0</h2>
+                        <p>Belum Aktif</p>
+                    </div>
+                </section>
+                <section class="pets">
+                    <div class="pet-section">
+                        <div class="section-header">
+                            <h2>Hewan Terbaru</h2>
+                            <a href="mypets.html" class="see-all-btn">
+                                Lihat Semua
+                            </a>
+                        </div>
+                        <div class="pet-grid" id="recentPetGrid">
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+    <script src="../assets/js/session.js"></script>
+    <script src="../assets/js/dashboard.js"></script>
+</body>
+</html>

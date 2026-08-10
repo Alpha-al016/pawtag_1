@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Minta Link Akses - PawTag</title>
+</head>
+<body>
+  <main>
+    <h1>Minta Link Akses</h1>
+    <p>Masukkan email pemilik. Jika terdaftar, link edit akan dikirim kembali.</p>
+
+    <form id="accessForm">
+      <input id="email" type="email" required placeholder="email@contoh.com">
+      <button type="submit">Kirim Link</button>
+    </form>
+
+    <p id="status"></p>
+  </main>
+
+  <script src="/assets/js/supabase-config.js"></script>
+  <script src="/assets/js/request-access.js"></script>
+</body>
+</html>
