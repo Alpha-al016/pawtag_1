@@ -1,76 +1,243 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Klaim PawTag</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klaim PawTag</title>
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+            background: #f5f7fa;
+            color: #222;
+        }
+        .container {
+            width: 100%;
+            max-width: 650px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow:
+                0 8px 30px
+                rgba(0, 0, 0, 0.08);
+        }
+        h1 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        .description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+        .tag-info {
+            background: #f0f4f8;
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 25px;
+        }
+        .tag-info strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #d6dbe1;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+        }
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #777;
+        }
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        button {
+            width: 100%;
+            border: none;
+            border-radius: 8px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .message {
+            margin-bottom: 20px;
+            padding: 12px 14px;
+            border-radius: 8px;
+            display: none;
+        }
+        .message.error {
+            display: block;
+            background: #ffe5e5;
+            color: #a00000;
+        }
+        .message.success {
+            display: block;
+            background: #e5f7e9;
+            color: #176b2c;
+        }
+        .required {
+            color: #c00;
+        }
+    </style>
 </head>
 <body>
-  <main>
-    <h1>Klaim PawTag</h1>
-    <p>Daftarkan tag Anda dan buat profil hewan.</p>
-
-    <form id="claimForm">
-      <label>Tag ID
-        <input id="tag_id" readonly>
-      </label><br>
-
-      <label>Email Pemilik
-        <input id="owner_email" type="email" required>
-      </label><br>
-
-      <label>Nama Pemilik
-        <input id="owner" required>
-      </label><br>
-
-      <label>Nomor Telepon
-        <input id="phone" required>
-      </label><br>
-
-      <label>Alamat
-        <input id="address">
-      </label><br>
-
-      <label>Nama Hewan
-        <input id="name" required>
-      </label><br>
-
-      <label>Jenis Hewan
-        <input id="type">
-      </label><br>
-
-      <label>Ras
-        <input id="breed">
-      </label><br>
-
-      <label>Tanggal Lahir
-        <input id="birth" type="date">
-      </label><br>
-
-      <label>Jenis Kelamin
-        <input id="gender">
-      </label><br>
-
-      <label>Warna
-        <input id="color">
-      </label><br>
-
-      <label>Berat
-        <input id="weight" type="number" step="0.01">
-      </label><br>
-
-      <label>Catatan
-        <textarea id="note"></textarea>
-      </label><br>
-
-      <button type="submit">Klaim Tag</button>
-    </form>
-
-    <p id="status"></p>
-  </main>
-
-  <script src="/assets/js/supabase-config.js"></script>
-  <script src="/assets/js/route-utils.js"></script>
-  <script src="/assets/js/claim.js"></script>
+    <main class="container">
+        <section class="card">
+            <h1>
+                Klaim PawTag
+            </h1>
+            <p class="description">
+                Isi data hewan dan informasi kontak
+                pemilik untuk mengaktifkan PawTag Anda.
+            </p>
+            <!-- TAG ID -->
+            <div class="tag-info">
+                <strong>
+                    Tag NFC
+                </strong>
+                <span id="tagId">
+                    Memuat...
+                </span>
+            </div>
+            <!-- MESSAGE -->
+            <div
+                id="message"
+                class="message">
+            </div>
+            <!-- FORM -->
+            <form id="claimForm">
+                <!-- EMAIL -->
+                <div class="form-group">
+                    <label for="ownerEmail">
+                        Email Pemilik
+                        <span class="required">*</span>
+                    </label>
+                    <input
+                        type="email"
+                        id="ownerEmail"
+                        name="ownerEmail"
+                        placeholder="contoh@email.com"
+                        required>
+                </div>
+                <!-- NAMA HEWAN -->
+                <div class="form-group">
+                    <label for="petName">
+                        Nama Hewan
+                        <span class="required">*</span>
+                    </label>
+                    <input
+                        type="text"
+                        id="petName"
+                        name="petName"
+                        placeholder="Contoh: Milo"
+                        required>
+                </div>
+                <!-- SPECIES -->
+                <div class="form-group">
+                    <label for="species">
+                        Jenis Hewan
+                        <span class="required">*</span>
+                    </label>
+                    <input
+                        type="text"
+                        id="species"
+                        name="species"
+                        placeholder="Contoh: Cat"
+                        required>
+                </div>
+                <!-- BREED -->
+                <div class="form-group">
+                    <label for="breed">
+                        Ras / Breed
+                    </label>
+                    <input
+                        type="text"
+                        id="breed"
+                        name="breed"
+                        placeholder="Contoh: Persian">
+                </div>
+                <!-- CONTACT -->
+                <div class="form-group">
+                    <label for="contactNumber">
+                        Nomor Telepon
+                        <span class="required">*</span>
+                    </label>
+                    <input
+                        type="tel"
+                        id="contactNumber"
+                        name="contactNumber"
+                        placeholder="08123456789"
+                        required>
+                </div>
+                <!-- ADDRESS -->
+                <div class="form-group">
+                    <label for="address">
+                        Alamat
+                    </label>
+                    <textarea
+                        id="address"
+                        name="address"
+                        placeholder="Alamat pemilik">
+                    </textarea>
+                </div>
+                <!-- NOTES -->
+                <div class="form-group">
+                    <label for="notes">
+                        Catatan
+                    </label>
+                    <textarea
+                        id="notes"
+                        name="notes"
+                        placeholder="Informasi tambahan tentang hewan">
+                    </textarea>
+                </div>
+                <!-- SUBMIT -->
+                <button
+                    type="submit"
+                    id="submitBtn">
+                    Klaim PawTag
+                </button>
+            </form>
+        </section>
+    </main>
+    <!-- PAWTAG CONFIG -->
+    <script src="../assets/js/supabase-config.js"></script>
+    <!-- CLAIM JS -->
+    <script src="../assets/js/claim.js"></script>
 </body>
 </html>
