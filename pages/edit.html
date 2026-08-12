@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Data PawTag</title>
+</head>
+
+<body>
+
+    <main>
+
+        <h1>Edit Data Hewan</h1>
+
+        <div id="errorMessage"></div>
+
+        <form id="editForm">
+
+            <label for="petName">
+                Nama Hewan
+            </label>
+
+            <input
+                type="text"
+                id="petName"
+                required
+            >
+
+            <label for="species">
+                Jenis Hewan
+            </label>
+
+            <input
+                type="text"
+                id="species"
+                required
+            >
+
+            <label for="breed">
+                Ras / Breed
+            </label>
+
+            <input
+                type="text"
+                id="breed"
+            >
+
+            <label for="contactNumber">
+                Nomor Telepon
+            </label>
+
+            <input
+                type="text"
+                id="contactNumber"
+                required
+            >
+
+            <label for="address">
+                Alamat
+            </label>
+
+            <textarea
+                id="address"
+            ></textarea>
+
+            <label for="notes">
+                Catatan
+            </label>
+
+            <textarea
+                id="notes"
+            ></textarea>
+
+            <button type="submit">
+                Simpan Perubahan
+            </button>
+
+        </form>
+
+    </main>
+
+    <script src="../assets/js/edit.js"></script>
+
+</body>
+</html>
