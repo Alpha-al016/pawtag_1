@@ -1,6 +1,10 @@
 import { corsHeaders } from "../_shared/cors.ts";
 import { supabase, json } from "../_shared/supabase.ts";
+const _RESEND_API_KEY =
+  Deno.env.get("RESEND_API_KEY");
 
+const _APP_BASE_URL =
+  Deno.env.get("APP_BASE_URL");
 
 Deno.serve(async (req) => {
 
@@ -275,8 +279,79 @@ Deno.serve(async (req) => {
             );
 
         }
+    const _editUrl =
+    `${_APP_BASE_URL}/pages/edit.html?secret_token=${secretToken}`;
 
+    const _emailResponse = await fetch(
+  "https://api.resend.com/emails",
+  {
+    method: "POST",
 
+    headers: {
+      "Authorization":
+        `Bearer ${_RESEND_API_KEY}`,
+
+      "Content-Type":
+        "application/json",
+    },
+
+    body: JSON.stringify({
+
+      from:
+        "PawTag <onboarding@resend.dev>",
+
+      to: [
+        owner_email.trim()
+      ],
+
+      subject:
+        "PawTag Anda Berhasil Diklaim",
+
+      html: `
+        <h2>PawTag berhasil diklaim!</h2>
+
+        <p>
+          Data hewan Anda sudah berhasil
+          didaftarkan.
+        </p>
+
+        <p>
+          Gunakan link berikut untuk
+          mengubah data PawTag:
+        </p>
+
+        <p>
+          <a href="${_editUrl}">
+            Edit Data PawTag
+          </a>
+        </p>
+
+        <p>
+          Simpan email ini karena link
+          tersebut digunakan untuk mengakses
+          data PawTag Anda.
+        </p>
+      `,
+    }),
+  }
+);
+
+    const emailResult =
+  await _emailResponse.json();
+
+console.log(
+  "RESEND RESPONSE:",
+  emailResult
+);
+
+if (!_emailResponse.ok) {
+
+  console.error(
+    "EMAIL ERROR:",
+    emailResult
+  );
+
+}
         // ====================================
         // SUCCESS
         // ====================================
@@ -319,3 +394,5 @@ Deno.serve(async (req) => {
     }
 
 });
+
+
