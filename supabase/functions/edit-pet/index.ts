@@ -224,43 +224,43 @@ Deno.serve(async (req) => {
       // ====================================
 
       const {
-        data: updatedPet,
-        error: updateError,
-      } = await supabase
+    data: updatedPet,
+    error: updateError
+  } = await supabase
+    .from("pets")
+    .update({
+      name: name.trim(),
 
-        .from("pets")
+      species: species.trim(),
 
-        .update({
-          name: name.trim(),
-          species: species.trim(),
-          breed: breed?.trim() || null,
-          contact_number:
-            contact_number.trim(),
-          address:
-            address?.trim() || null,
-          notes:
-            notes?.trim() || null,
-        })
+      breed:
+        breed?.trim() || null,
 
-        .eq(
-          "id",
-          existingPet.id
-        )
+      contact_number:
+        contact_number.trim(),
 
-        .select(`
-          id,
-          name,
-          species,
-          breed,
-          contact_number,
-          address,
-          notes,
-          tag_id,
-          is_claimed
-        `)
+      address:
+        address?.trim() || null,
 
-        .single();
-
+      notes:
+        notes?.trim() || null,
+    })
+    .eq(
+      "id",
+      existingPet.id
+    )
+    .select(`
+      id,
+      name,
+      species,
+      breed,
+      contact_number,
+      address,
+      notes,
+      tag_id,
+      is_claimed
+    `)
+    .single();
 
       if (updateError) {
 
