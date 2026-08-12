@@ -1,7 +1,7 @@
 -- PawTag Secret Token Access
 -- Run this migration in Supabase SQL Editor.
 
-alter table public.pets
+create table public.pets
   add column if not exists tag_id text,
   add column if not exists secret_token uuid,
   add column if not exists is_claimed boolean not null default false,
