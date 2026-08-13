@@ -34,7 +34,8 @@ Deno.serve(async (req) => {
       address,
       notes,
       tag_id,
-      is_claimed
+      is_claimed,
+      photo_url
     `)
     .eq("tag_id", tagId)
     .maybeSingle();
@@ -63,14 +64,53 @@ Deno.serve(async (req) => {
     );
   }
 
-  return json(
+  let _photoUrl = null;
+
+if (pet.photo_url) {
+
+    const {
+        data: signedUrlData,
+        error: signedUrlError
+    } = await supabase.storage
+        .from("pet-images")
+        .createSignedUrl(
+            pet.photo_url,
+            60 * 60
+        );
+
+    if (signedUrlError) {
+
+        console.error(
+            "SIGNED URL ERROR:",
+            signedUrlError
+        );
+
+    } else {
+
+        _photoUrl =
+            signedUrlData?.signedUrl || null;
+
+    }
+}
+
+// ============================================
+// RESPONSE
+// ============================================
+
+return json(
     {
-      success: true,
-      function_version: "public-pet-v2",
-      claimed: pet.is_claimed,
-      pet,
+        success: true,
+
+        claimed: true,
+
+        pet: {
+            ...pet,
+
+            photo_url:
+                _photoUrl
+        }
     },
     200,
-    corsHeaders,
-  );
+    corsHeaders
+);
 });
