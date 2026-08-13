@@ -1,123 +1,517 @@
-// ===============================
-// Ambil ID dari URL
-// ===============================
+// ============================================
+// PAWTAG - PUBLIC PET V2
+// ============================================
 
-const params = new URLSearchParams(window.location.search);
+console.log("PAWTAG PUBLIC PET V2 LOADED");
 
-const code = params.get("code");
+// ============================================
+// CONFIG
+// ============================================
 
-// ===============================
-// Ambil Data
-// ===============================
+const FUNCTIONS_URL =
+    window.PAWTAG_CONFIG?.FUNCTIONS_URL;
 
-const pets =
-JSON.parse(localStorage.getItem("pets")) || [];
+console.log("FUNCTIONS_URL:", FUNCTIONS_URL);
 
-const pet =
-pets.find(item => item.nfcCode === code);
 
-if(!pet){
+// ============================================
+// Ambil TAG ID dari URL
+// ============================================
 
-    alert("Data hewan tidak ditemukan.");
+function getTagIdFromUrl() {
 
-    window.location.href = "../index.html";
+    // ----------------------------------------
+    // Format baru:
+    // /p/PT-001
+    // ----------------------------------------
+
+    const path =
+        window.location.pathname;
+
+    const parts =
+        path.split("/").filter(Boolean);
+
+    if (
+        parts.length >= 2 &&
+        parts[0] === "p"
+    ) {
+
+        return decodeURIComponent(parts[1]);
+
+    }
+
+
+    // ----------------------------------------
+    // Format lama untuk testing:
+    // /pages/publicpet.html?code=PT-001
+    // ----------------------------------------
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+    const code =
+        params.get("code");
+
+    if (code) {
+
+        return code.trim();
+
+    }
+
+
+    return null;
+}
+
+
+// ============================================
+// Tampilkan Error
+// ============================================
+
+function showError(message) {
+
+    console.error(message);
+
+    const petName =
+        document.getElementById("petName");
+
+    if (petName) {
+
+        petName.textContent =
+            message;
+
+    }
 
 }
 
-// ===============================
-// Simpan Scan History
-// ===============================
 
-let scanHistory =
-JSON.parse(localStorage.getItem("scanHistory")) || [];
+// ============================================
+// RECORD SCAN
+// ============================================
 
-scanHistory.push({
+async function recordScan(tagId) {
 
-    id: Date.now(),
+    try {
 
-    petId: pet.id,
+        const response =
+            await fetch(
+                `${FUNCTIONS_URL}/record-scan`,
+                {
+                    method: "POST",
 
-    petName: pet.name,
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
 
-    ownerEmail: pet.ownerEmail,
+                    body: JSON.stringify({
+                        tag_id: tagId
+                    })
+                }
+            );
 
-    nfcCode: pet.nfcCode,
 
-    scanTime: new Date().toISOString()
+        const result =
+            await response.json();
 
-});
 
-localStorage.setItem(
+        console.log(
+            "RECORD SCAN API:",
+            result
+        );
 
-    "scanHistory",
 
-    JSON.stringify(scanHistory)
+        if (!response.ok) {
 
-);
+            console.error(
+                "Gagal mencatat scan:",
+                result
+            );
 
-// ===============================
-// Tampilkan Data Hewan
-// ===============================
+            return;
 
-document.getElementById("petImage").src =
-pet.photo;
+        }
 
-document.getElementById("petName").textContent =
-pet.name;
 
-document.getElementById("petBreed").textContent =
-pet.breed;
+        console.log(
+            "Scan berhasil dicatat."
+        );
 
-// ===============================
-// Status NFC
-// ===============================
+    }
 
-const status =
-document.getElementById("petStatus");
+    catch (error) {
 
-if(pet.nfcStatus){
+        console.error(
+            "RECORD SCAN ERROR:",
+            error
+        );
 
-    status.textContent = "🟢 NFC Aktif";
-
-}else{
-
-    status.textContent = "⚪ NFC Belum Aktif";
+    }
 
 }
 
-// ===============================
-// Data Pemilik
-// ===============================
 
-document.getElementById("ownerName").textContent =
-pet.owner;
 
-document.getElementById("ownerPhone").textContent =
-pet.phone;
+// ============================================
+// Load Public Pet
+// ============================================
 
-document.getElementById("ownerAddress").textContent =
-pet.address;
+async function loadPublicPet() {
 
-// ===============================
-// Catatan
-// ===============================
+    const tagId =
+        getTagIdFromUrl();
 
-document.getElementById("petNote").textContent =
-pet.note || "Tidak ada catatan.";
+    console.log("TAG ID:", tagId);
 
-// ===============================
-// Tombol Telepon
-// ===============================
 
-document.getElementById("callBtn").href =
-`tel:${pet.phone}`;
+    // ----------------------------------------
+    // TAG ID tidak ditemukan
+    // ----------------------------------------
 
-// ===============================
-// Tombol WhatsApp
-// ===============================
+    if (!tagId) {
 
-const phone =
-pet.phone.replace(/^0/, "62");
+        showError(
+            "Tag NFC tidak valid."
+        );
 
-document.getElementById("waBtn").href =
-`https://wa.me/${phone}?text=Halo,%20saya%20menemukan%20${pet.name}.`;
+        return;
+
+    }
+
+
+    // ----------------------------------------
+    // CONFIG tidak ditemukan
+    // ----------------------------------------
+
+    if (!FUNCTIONS_URL) {
+
+        showError(
+            "Konfigurasi server tidak ditemukan."
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        // ------------------------------------
+        // Request ke Supabase Edge Function
+        // ------------------------------------
+
+        const requestUrl =
+            `${FUNCTIONS_URL}/public-pet?tag_id=${encodeURIComponent(tagId)}`;
+
+        console.log(
+            "REQUEST:",
+            requestUrl
+        );
+
+
+        const response =
+            await fetch(requestUrl);
+
+
+        const result =
+            await response.json();
+
+
+        console.log(
+            "PUBLIC PET API:",
+            result
+        );
+
+
+        // ------------------------------------
+        // TAG tidak ditemukan
+        // ------------------------------------
+
+        if (response.status === 404) {
+
+            showError(
+                "Tag NFC tidak ditemukan."
+            );
+
+            return;
+
+        }
+
+
+        // ------------------------------------
+        // API Error
+        // ------------------------------------
+
+        if (
+            !response.ok ||
+            !result.success
+        ) {
+
+            showError(
+                "Gagal mengambil data hewan."
+            );
+
+            return;
+
+        }
+
+
+        // ------------------------------------
+        // TAG BELUM DIKLAIM
+        // ------------------------------------
+
+        if (result.claimed === false) {
+
+            console.log(
+                "Tag belum diklaim."
+            );
+
+            window.location.href =
+                `/claim/${encodeURIComponent(tagId)}`;
+
+            return;
+        }
+
+
+        // ------------------------------------
+        // TAG SUDAH DIKLAIM
+        // ------------------------------------
+
+        const pet =
+            result.pet;
+
+
+        if (!pet) {
+
+            showError(
+                "Data hewan tidak tersedia."
+            );
+
+            return;
+
+        }
+
+        // ====================================
+        // Catat Scan
+        // ====================================
+
+        await recordScan(tagId);
+
+
+        console.log(
+            "PET DATA:",
+            pet
+        );
+
+
+        // ====================================
+        // Nama Hewan
+        // ====================================
+
+        const petName =
+            document.getElementById("petName");
+
+        if (petName) {
+
+            petName.textContent =
+                pet.name ||
+                "Nama tidak tersedia";
+
+        }
+
+
+        // ====================================
+        // Breed
+        // ====================================
+
+        const petBreed =
+            document.getElementById("petBreed");
+
+        if (petBreed) {
+
+            petBreed.textContent =
+                pet.breed ||
+                "Breed tidak diketahui";
+
+        }
+
+
+        // ====================================
+        // Status NFC
+        // ====================================
+
+        const petStatus =
+            document.getElementById("petStatus");
+
+        if (petStatus) {
+
+            petStatus.textContent =
+                "🟢 NFC Aktif";
+
+        }
+
+
+        // ====================================
+        // Nama Pemilik
+        // ====================================
+
+        const ownerName =
+            document.getElementById("ownerName");
+
+        if (ownerName) {
+
+            // owner_name belum tersedia
+            // di database baru.
+
+            ownerName.textContent =
+                "Pemilik";
+
+        }
+
+
+        // ====================================
+        // Nomor Telepon
+        // ====================================
+
+        const ownerPhone =
+            document.getElementById("ownerPhone");
+
+        if (ownerPhone) {
+
+            ownerPhone.textContent =
+                pet.contact_number ||
+                "Tidak tersedia";
+
+        }
+
+
+        // ====================================
+        // Alamat
+        // ====================================
+
+        const ownerAddress =
+            document.getElementById("ownerAddress");
+
+        if (ownerAddress) {
+
+            ownerAddress.textContent =
+                pet.address ||
+                "Tidak tersedia";
+
+        }
+
+
+        // ====================================
+        // Catatan
+        // ====================================
+
+        const petNote =
+            document.getElementById("petNote");
+
+        if (petNote) {
+
+            petNote.textContent =
+                pet.notes ||
+                "Tidak ada catatan.";
+
+        }
+
+
+        // ====================================
+        // Tombol Telepon
+        // ====================================
+
+        const callBtn =
+            document.getElementById("callBtn");
+
+        if (
+            callBtn &&
+            pet.contact_number
+        ) {
+
+            callBtn.href =
+                `tel:${pet.contact_number}`;
+
+        }
+
+
+        // ====================================
+        // Tombol WhatsApp
+        // ====================================
+
+        const waBtn =
+            document.getElementById("waBtn");
+
+
+        if (
+            waBtn &&
+            pet.contact_number
+        ) {
+
+            const phone =
+                pet.contact_number
+                    .replace(/^0/, "62");
+
+
+            const message =
+                `Halo, saya menemukan ${pet.name || "hewan Anda"}.`;
+
+
+            waBtn.href =
+                `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+
+        }
+
+
+        // ====================================
+        // Foto
+        // ====================================
+
+            const petImage =
+        document.getElementById("petImage");
+
+
+        if (
+            petImage &&
+            pet.photo_url
+        ) {
+
+            petImage.src =
+                pet.photo_url;
+
+
+            petImage.onerror =
+                function () {
+
+                    console.error(
+                        "Gagal memuat foto hewan."
+                    );
+
+                };
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "PUBLIC PET ERROR:",
+            error
+        );
+
+
+        showError(
+            "Tidak dapat terhubung ke server."
+        );
+
+    }
+
+}
+
+
+// ============================================
+// Jalankan
+// ============================================
+
+loadPublicPet();
