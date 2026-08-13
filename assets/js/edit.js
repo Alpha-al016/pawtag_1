@@ -14,6 +14,46 @@ if (!secretToken) {
     throw new Error("Secret token tidak ditemukan.");
 }
 
+const petPhoto =
+    document.getElementById("petPhoto");
+
+const petPhotoPreview =
+    document.getElementById("petPhotoPreview");
+
+
+if (petPhoto) {
+
+    petPhoto.addEventListener(
+        "change",
+        function () {
+
+            const file =
+                petPhoto.files[0];
+
+            if (!file) {
+
+                petPhotoPreview.style.display =
+                    "none";
+
+                return;
+
+            }
+
+
+            const imageUrl =
+                URL.createObjectURL(file);
+
+            petPhotoPreview.src =
+                imageUrl;
+
+            petPhotoPreview.style.display =
+                "block";
+
+        }
+    );
+
+}
+
 const FUNCTIONS_URL =
     "https://cmyxgygopwutjqzjjgsu.supabase.co/functions/v1";
 
@@ -150,6 +190,70 @@ editForm.addEventListener(
                     result.error ||
                     "Gagal menyimpan data."
                 );
+
+            }
+
+            // ========================================
+            // UPLOAD FOTO JIKA ADA
+            // ========================================
+
+            const photoFile =
+                document
+                    .getElementById("petPhoto")
+                    ?.files[0];
+
+
+            if (photoFile) {
+
+                const photoFormData =
+                    new FormData();
+
+
+                photoFormData.append(
+                    "secret_token",
+                    secretToken
+                );
+
+
+                photoFormData.append(
+                    "photo",
+                    photoFile
+                );
+
+
+                const photoResponse =
+                    await fetch(
+                        `${FUNCTIONS_URL}/upload-pet-photo`,
+                        {
+                            method: "POST",
+
+                            body:
+                                photoFormData
+                        }
+                    );
+
+
+                const photoResult =
+                    await photoResponse.json();
+
+
+                console.log(
+                    "UPLOAD PHOTO RESPONSE:",
+                    photoResult
+                );
+
+
+                if (
+                    !photoResponse.ok ||
+                    !photoResult.success
+                ) {
+
+                    throw new Error(
+                        photoResult.error ||
+                        "Gagal mengupload foto."
+                    );
+
+                }
 
             }
 

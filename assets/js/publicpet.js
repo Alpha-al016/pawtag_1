@@ -87,6 +87,72 @@ function showError(message) {
 
 
 // ============================================
+// RECORD SCAN
+// ============================================
+
+async function recordScan(tagId) {
+
+    try {
+
+        const response =
+            await fetch(
+                `${FUNCTIONS_URL}/record-scan`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        tag_id: tagId
+                    })
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        console.log(
+            "RECORD SCAN API:",
+            result
+        );
+
+
+        if (!response.ok) {
+
+            console.error(
+                "Gagal mencatat scan:",
+                result
+            );
+
+            return;
+
+        }
+
+
+        console.log(
+            "Scan berhasil dicatat."
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "RECORD SCAN ERROR:",
+            error
+        );
+
+    }
+
+}
+
+
+
+// ============================================
 // Load Public Pet
 // ============================================
 
@@ -224,6 +290,12 @@ async function loadPublicPet() {
             return;
 
         }
+
+        // ====================================
+        // Catat Scan
+        // ====================================
+
+        await recordScan(tagId);
 
 
         console.log(
@@ -395,14 +467,29 @@ async function loadPublicPet() {
         // Foto
         // ====================================
 
-        // Database baru belum memiliki
-        // kolom photo.
-        //
-        // Jadi kita sengaja TIDAK mengubah
-        // petImage.src.
-        //
-        // Gambar default dari HTML akan tetap
-        // digunakan.
+            const petImage =
+        document.getElementById("petImage");
+
+
+        if (
+            petImage &&
+            pet.photo_url
+        ) {
+
+            petImage.src =
+                pet.photo_url;
+
+
+            petImage.onerror =
+                function () {
+
+                    console.error(
+                        "Gagal memuat foto hewan."
+                    );
+
+                };
+
+        }
 
     }
 
