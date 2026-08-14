@@ -49,6 +49,7 @@ Deno.serve(async (req) => {
 
       .select(`
         id,
+        owner_name,
         name,
         species,
         breed,
@@ -116,6 +117,7 @@ Deno.serve(async (req) => {
 
       const {
         secret_token,
+        owner_name,
         name,
         species,
         breed,
@@ -148,6 +150,7 @@ Deno.serve(async (req) => {
       // ====================================
 
       if (
+        !owner_name ||
         !name ||
         !species ||
         !contact_number
@@ -157,7 +160,7 @@ Deno.serve(async (req) => {
           {
             success: false,
             error:
-              "name, species, dan contact_number wajib diisi",
+              "owner_name, name, species, dan contact_number wajib diisi",
           },
           400,
           corsHeaders
@@ -224,43 +227,46 @@ Deno.serve(async (req) => {
       // ====================================
 
       const {
-    data: updatedPet,
-    error: updateError
-  } = await supabase
-    .from("pets")
-    .update({
-      name: name.trim(),
+        data: updatedPet,
+        error: updateError
+      } = await supabase
+        .from("pets")
+        .update({
+          owner_name: owner_name.trim(),
 
-      species: species.trim(),
+          name: name.trim(),
 
-      breed:
-        breed?.trim() || null,
+          species: species.trim(),
 
-      contact_number:
-        contact_number.trim(),
+          breed:
+            breed?.trim() || null,
 
-      address:
-        address?.trim() || null,
+          contact_number:
+            contact_number.trim(),
 
-      notes:
-        notes?.trim() || null,
-    })
-    .eq(
-      "id",
-      existingPet.id
-    )
-    .select(`
-      id,
-      name,
-      species,
-      breed,
-      contact_number,
-      address,
-      notes,
-      tag_id,
-      is_claimed
-    `)
-    .single();
+          address:
+            address?.trim() || null,
+
+          notes:
+            notes?.trim() || null,
+        })
+        .eq(
+          "id",
+          existingPet.id
+        )
+        .select(`
+          id,
+          owner_name,
+          name,
+          species,
+          breed,
+          contact_number,
+          address,
+          notes,
+          tag_id,
+          is_claimed
+        `)
+        .single();
 
       if (updateError) {
 
