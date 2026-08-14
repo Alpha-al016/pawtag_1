@@ -178,6 +178,11 @@ form.addEventListener(
                 .value
                 .trim();
 
+        const ownerName =
+            document
+                .getElementById("ownerName")
+                .value
+                .trim();
 
         const petName =
             document
@@ -228,6 +233,8 @@ form.addEventListener(
         const payload = {
 
             tag_id: tagId,
+
+            owner_name: ownerName,
 
             owner_email: ownerEmail,
 

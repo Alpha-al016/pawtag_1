@@ -360,10 +360,8 @@ async function loadPublicPet() {
 
         if (ownerName) {
 
-            // owner_name belum tersedia
-            // di database baru.
-
             ownerName.textContent =
+                pet.owner_name ||
                 "Pemilik";
 
         }

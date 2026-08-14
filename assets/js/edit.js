@@ -80,6 +80,9 @@ async function loadPet() {
 
         const pet = result.pet;
 
+        document.getElementById("ownerName").value =
+            pet.owner_name || "";
+
         document.getElementById("petName").value =
             pet.name || "";
 
@@ -136,6 +139,11 @@ editForm.addEventListener(
                             secret_token:
                                 secretToken,
 
+                            owner_name:
+                                document
+                                    .getElementById("ownerName")
+                                    .value,
+                            
                             name:
                                 document
                                     .getElementById("petName")
