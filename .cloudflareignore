@@ -1,0 +1,8 @@
+node_modules
+supabase
+.git
+.github
+.vscode
+wrangler.jsonc
+package.json
+package-lock.json
