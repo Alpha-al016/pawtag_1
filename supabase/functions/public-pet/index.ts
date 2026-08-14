@@ -30,6 +30,7 @@ Deno.serve(async (req) => {
       name,
       species,
       breed,
+      owner_name,
       contact_number,
       address,
       notes,
