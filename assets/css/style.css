@@ -83,18 +83,6 @@ html{
     color:var(--primary);
 }
 
-.login-btn{
-    text-decoration:none;
-    background:var(--primary);
-    color:var(--white);
-    padding:12px 28px;
-    border-radius:var(--radius-xl);
-    transition:var(--transition);
-}
-
-.login-btn:hover{
-    background:var(--secondary);
-}
 
 /* ================= HERO ================= */
 
